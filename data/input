@@ -1,0 +1,35 @@
+ <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <td><a href="#" ng-click="sortType = 'jobId'; sortReverse = !sortReverse">Идентификатор задачи<span ng-show="sortType == 'jobId' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'jobId' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></td>
+            <td><a href="#" ng-click="sortType = 'startTms'; sortReverse = !sortReverse">Время запуска<span ng-show="sortType == 'startTms' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'startTms' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></td>
+            <td><a href="#" ng-click="sortType = 'inFile'; sortReverse = !sortReverse">Полученный файл<span ng-show="sortType == 'inFile' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'inFile' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></td>
+            <td><a href="#" ng-click="sortType = 'phase'; sortReverse = !sortReverse">Текущая фаза<span ng-show="sortType == 'phase' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'phase' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></td>
+            <td><a href="#" ng-click="sortType = 'jStatus'; sortReverse = !sortReverse">Статус<span ng-show="sortType == 'jStatus' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'jStatus' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></td>
+            <td>Процент выполнения</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="job in jList | orderBy:sortType:sortReverse | filter:searchJob | filter: { id: '!.prediction-reports' }">
+            <td>{{ job.jobId }}</td>
+            <td>{{job.tsLastStateChange | date:'dd.MM.yyyy HH.mm.ss'}}</td>
+            <td> 
+              <button ng-show="controller.canShowDownload(job)" type="button" ng-click="controller.processExport(job.id)" class="btn btn-info">Экспорт</button>
+              <span ng-show="controller.canShowDownload(job)">&nbsp;или&nbsp;</span>
+              <a ng-show="controller.canShowDownload(job)" ng-href="/{{serviceName}}/download/{{job.id}}{{buster}}" download="{{ job.id }}">{{ job.id }}</a>
+              <span ng-show="!controller.canShowDownload(job)">{{ job.id }}</span>
+            </td>
+            <td>{{ job.phase }} {{getJobDescription(job)}}</td>
+            <td> 
+              <button ng-show="controller.canShowStart(job)" type="button" ng-click="controller.initStart(job.id)" class="btn btn-success">Задача может быть запущена</button>
+              <span ng-show="!controller.canShowStart(job)">{{ job.state }} </span>
+            </td>
+            <td>
+              <div ng-show="controller.canShowProgress(job)" style="margin-bottom: 0;" class="progress">
+                <div role="progressbar" ng-style="{ 'width': job.percentDone + '%' }" class="progress-bar progress-bar-info progress-bar"></div>{{job.percentDone}} %
+              </div>
+              <button ng-show="!controller.canShowProgress(job) &amp;&amp; controller.allowShowDetails(job)" type="button" ng-click="controller.showDetails(job)" class="btn btn-info">Детали</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>

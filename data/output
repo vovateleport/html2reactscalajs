@@ -1,0 +1,78 @@
+
+<.html(
+	<.head(),
+	<.body(
+		<.table(^.cls:="table table-bordered table-striped",
+			<.thead(
+				<.tr(
+					<.td(
+						<.a(
+							"Идентификатор задачи",
+							<.span(^.cls:="fa fa-caret-down"),
+							<.span(^.cls:="fa fa-caret-up")
+						)),
+					<.td(
+						<.a(
+							"Время запуска",
+							<.span(^.cls:="fa fa-caret-down"),
+							<.span(^.cls:="fa fa-caret-up")
+						)),
+					<.td(
+						<.a(
+							"Полученный файл",
+							<.span(^.cls:="fa fa-caret-down"),
+							<.span(^.cls:="fa fa-caret-up")
+						)),
+					<.td(
+						<.a(
+							"Текущая фаза",
+							<.span(^.cls:="fa fa-caret-down"),
+							<.span(^.cls:="fa fa-caret-up")
+						)),
+					<.td(
+						<.a(
+							"Статус",
+							<.span(^.cls:="fa fa-caret-down"),
+							<.span(^.cls:="fa fa-caret-up")
+						)),
+					<.td(
+						"Процент выполнения")
+				)),
+			<.tbody(
+				<.tr(
+					<.td(
+						"{{ job.jobId }}"),
+					<.td(
+						"{{job.tsLastStateChange | date:'dd.MM.yyyy HH.mm.ss'}}"),
+					<.td(
+						<.button(^.cls:="btn btn-info",
+							"Экспорт"
+						),
+						<.span(
+							" или "),
+						<.a(
+							"{{ job.id }}"),
+						<.span(
+							"{{ job.id }}")
+					),
+					<.td(
+						"{{ job.phase }} {{getJobDescription(job)}}"),
+					<.td(
+						<.button(^.cls:="btn btn-success",
+							"Задача может быть запущена"
+						),
+						<.span(
+							"{{ job.state }}")
+					),
+					<.td(
+						<.div(^.cls:="progress",
+							<.div(^.cls:="progress-bar progress-bar-info progress-bar"),
+							"{{job.percentDone}} %"
+						),
+						<.button(^.cls:="btn btn-info",
+							"Детали"
+						)
+					)
+				))
+		))
+)
